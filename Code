@@ -1,1 +1,54 @@
-add code herre
+#include <Servo.h>
+ // Create servo objects to control servos 
+Servo servo1; 
+Servo servo2; 
+Servo servo3; 
+Servo servo4; 
+Servo servo5; 
+
+ // Define pins 
+const int buttonPin = 1;   // Push button pin 
+const int servoPins[5] = {2, 3, 4, 5, 6};  // Servo pins from pinky to thumb
+
+ // Variables to hold the servo positions
+ int posOpen = 0;  // Open position
+ int posClose = 180;  // Close position
+
+ // Variable to hold the button state 
+int buttonState = 0; 
+
+ void setup() { 
+ // Attach the servos to their respective pins
+ servo1.attach(servoPins[0]); 
+ servo2.attach(servoPins[1]); 
+ servo3.attach(servoPins[2]); 
+ servo4.attach(servoPins[3]); 
+ servo5.attach(servoPins[4]); 
+
+ // Initialize the push button pin as an input 
+ pinMode(buttonPin, INPUT); 
+} 
+ void loop() { 
+ // Read the state of the push button 
+ buttonState = digitalRead(buttonPin); 
+
+ // If the button is pressed 
+ if (buttonState == HIGH) {
+ // Close the hand 
+ moveServos(posClose);
+ delay(1000);  // Wait for 1 second 
+ // Open the hand 
+ moveServos(posOpen); 
+ delay(1000);  // Wait for 1 second
+ } 
+} 
+ // Function to move all servos to a specific position 
+void moveServos(int position) { 
+ servo1.write(position); 
+ servo2.write(position);
+ servo3.write(position); 
+ servo4.write(position); 
+ servo5.write(position); 
+ // Wait for the servos to reach the position
+ delay(15); 
+}

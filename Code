@@ -1,14 +1,24 @@
 #include <Servo.h>
  // Create servo objects to control servos 
-Servo servo1; 
+ // i recommend naming each servo as what it actually does, for example, "pinky" , "ring" , "middle" , "index" , "thumb" , this might not look as professional, but it makes coding much easier
+ //  adding a comment after the semicolon with the name works too 
+Servo servo1; //pinky
 Servo servo2; 
 Servo servo3; 
 Servo servo4; 
-Servo servo5; 
+Servo servo5; //thumb
 
  // Define pins 
 const int buttonPin = 1;   // Push button pin 
-const int servoPins[5] = {2, 3, 4, 5, 6};  // Servo pins from pinky to thumb
+const int servoPins[5] = {2, 3, 4, 5, 6};  // Servo pins from pinky to thumb --- this works, but can confuse you later if you want to tell which servo is assigned to which pin
+//const int servoPins[5] = {11, 10, 9, 6, 5};
+
+// the reason it isnt working is because you are using the wrong pins to control the servos, and id recommend assigning the pins differently too.
+// servos require PWM pins, (you can find out which ones are PWN by searching for your arduino's "pinout") but you are using regular pins, which wont work
+// PWM stands for "Pulse Width Modulation" and send a signal across a wire (the yellow one), which in this case, the servo reads as an angle
+// for an arduino UNO, the PWM pins are 11, 10, 9, 6, 5 and 3, make sure to rewire the servos for the new code to work
+
+// id also recommend assigning a pin to each servo individually, instead of as a set (uncomment the next line to make it work as actual code)
 
  // Variables to hold the servo positions
  int posOpen = 0;  // Open position
@@ -24,6 +34,13 @@ int buttonState = 0;
  servo3.attach(servoPins[2]); 
  servo4.attach(servoPins[3]); 
  servo5.attach(servoPins[4]); 
+
+ // this way might be easier, as its easier to see the exact pin the servo is assigned, instead of pulling a value from servoPins[]
+ // servo1.attach(11);
+ // servo2.attach(10);
+ // servo3.attach(9);
+ // servo4.attach(6);
+ // servo5.attach(5);
 
  // Initialize the push button pin as an input 
  pinMode(buttonPin, INPUT); 
@@ -41,7 +58,24 @@ int buttonState = 0;
  moveServos(posOpen); 
  delay(1000);  // Wait for 1 second
  } 
+
+  //based off of the video i saw, a way to program the arm would be like this:   (delete the "/*" before "if" to uncomment it to make it actually run)
+
+  /* if (buttonState == HIGH) {
+    moveServos(posOpen); //make sure all fingers are open
+    servo1.write(posClose); //close the first 4 fingers
+    servo2.write(posClose);
+    servo3.write(posClose);
+    servo4.write(posClose);
+    delay(2000); // wait 2 seconds
+    servo5.write(posClose); //close the thumb
+    delay(3000);
+    moveServos(posOpen); //open the hand
+    delay(1000);
+  } */
+
 } 
+
  // Function to move all servos to a specific position 
 void moveServos(int position) { 
  servo1.write(position); 
@@ -52,3 +86,5 @@ void moveServos(int position) {
  // Wait for the servos to reach the position
  delay(15); 
 }
+
+
